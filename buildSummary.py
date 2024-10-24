@@ -3,7 +3,7 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 from datetime import datetime
 
-def create_session_summary():
+def run_ctas():
     # Initialize Snowflake Hook
     hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
     conn = hook.get_conn()
@@ -40,14 +40,14 @@ def create_session_summary():
 with DAG(
     dag_id='session_summary_dag',
     start_date=datetime(2024, 10, 2),
-    schedule_interval='@daily',
+    schedule='45 2 * * *',
     catchup=False,
     tags=['ELT'],
 ) as dag:
 
     create_summary_task = PythonOperator(
-        task_id='create_session_summary',
-        python_callable=create_session_summary,
+        task_id='run_ctas',
+        python_callable=run_ctas,
     )
 
     create_summary_task
