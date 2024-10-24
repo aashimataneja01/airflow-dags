@@ -30,6 +30,7 @@ def run_ctas():
         dev.raw_data.session_timestamp s 
     ON 
         u.sessionId = s.sessionId
+        #to check duplicate records
     WHERE 
         s.ts IS NOT NULL
     AND 
